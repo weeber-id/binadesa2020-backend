@@ -8,6 +8,6 @@ import (
 // EncodeMD5 encrypt
 func EncodeMD5(input string) string {
 	hasher := md5.New()
-	hasher.Write([]byte("testing"))
+	hasher.Write([]byte(input))
 	return hex.EncodeToString(hasher.Sum(nil))
 }
