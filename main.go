@@ -2,6 +2,7 @@ package main
 
 import (
 	"binadesa2020-backend/lib/controllers"
+	"binadesa2020-backend/lib/middleware"
 	"binadesa2020-backend/lib/services/mongodb"
 	"binadesa2020-backend/lib/variable"
 	"time"
@@ -21,10 +22,14 @@ func main() {
 	defer mongodb.Client.Disconnect(ctx)
 
 	router := gin.Default()
+	router.POST("/login", controllers.Login)
+
 	adminGroup := router.Group("/admin")
+	adminGroup.Use(middleware.AdminAuthorization())
 	{
-		adminGroup.POST("/login", controllers.Login)
-		adminGroup.GET("/list", controllers.GetAdmin)
+		adminGroup.GET("/accounts", controllers.GetAllAdmin)
+		adminGroup.POST("/account", controllers.CreateAdmin)
+		adminGroup.DELETE("/account", controllers.DeleteAdmin)
 	}
 
 	router.Run(":8080")

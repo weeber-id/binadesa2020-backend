@@ -6,17 +6,18 @@ import (
 	"binadesa2020-backend/lib/variable"
 	"context"
 
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"gopkg.in/mgo.v2/bson"
 )
 
 // Admin models in mongoDB
 type Admin struct {
-	ID       bson.ObjectId `bson:"_id"`
-	Username string
-	Password string `json:"-"`
-	Name     string
-	Level    int8
+	ID       primitive.ObjectID `bson:"_id,omitempty" json:",omitempty"`
+	Username string             `bson:"username"`
+	Password string             `bson:"password" json:"-"`
+	Name     string             `bson:"name"`
+	Level    int                `bson:"level"`
 }
 
 // Collection for admin data

@@ -35,11 +35,20 @@ func Login(c *gin.Context) {
 	claims["role"] = "admin"
 	claims["name"] = admin.Name
 	claims["username"] = admin.Username
+	claims["level"] = admin.Level
 
 	config := variable.JWTConfig
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	token, err := at.SignedString([]byte(config.Key))
 	clog.Panic2Response(c, err, "generate JWT token")
 
-	c.JSON(http.StatusOK, gin.H{"access_token": token})
+	data := struct {
+		Admin       models.Admin `json:"admin"`
+		AccessToken string       `json:"access_token"`
+	}{
+		Admin:       admin,
+		AccessToken: token,
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": data})
 }
