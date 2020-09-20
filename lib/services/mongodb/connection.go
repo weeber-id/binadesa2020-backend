@@ -7,6 +7,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 // Client mongoDB
@@ -26,6 +27,11 @@ func Connection(ctx context.Context) {
 	Client, err = mongo.Connect(ctx, options.Client().ApplyURI(URI))
 	if err != nil {
 		clog.Fatal(err, "connecting database")
+	}
+
+	err = Client.Ping(ctx, readpref.Primary())
+	if err != nil {
+		clog.Fatal(err, "ping to database")
 	}
 
 	DB = Client.Database(config.Database)
