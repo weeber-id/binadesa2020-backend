@@ -2,8 +2,10 @@ package main
 
 import (
 	"binadesa2020-backend/lib/controllers"
+	"binadesa2020-backend/lib/controllers/kartukeluarga"
 	"binadesa2020-backend/lib/middleware"
 	"binadesa2020-backend/lib/services/mongodb"
+	"binadesa2020-backend/lib/services/storage"
 	"binadesa2020-backend/lib/variable"
 	"time"
 
@@ -14,6 +16,7 @@ import (
 
 func main() {
 	variable.Initialization()
+	storage.MinioInitialization()
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -35,6 +38,10 @@ func main() {
 	}
 
 	router.POST("/complaint", controllers.CreateComplaint)
+	submissionGroup := router.Group("/submission")
+	{
+		submissionGroup.POST("/kartu-keluarga", kartukeluarga.Submission)
+	}
 
 	router.Run(":8080")
 }
