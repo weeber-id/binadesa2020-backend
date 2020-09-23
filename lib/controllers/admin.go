@@ -68,14 +68,14 @@ func CreateAdmin(c *gin.Context) {
 	}
 
 	// write new admin to database
-	newAdmin := models.Admin{
+	newAdmin := &models.Admin{
 		Username: req.Username,
 		Password: tools.EncodeMD5(req.Password),
 		Name:     req.Name,
 		Level:    req.Level,
 	}
 
-	res, err := adminMdl.Collection().InsertOne(c, newAdmin)
+	res, err := newAdmin.Create()
 	clog.Panic2Response(c, err, "create item")
 
 	c.JSON(http.StatusOK, gin.H{"message": "OK", "data": res})
@@ -111,7 +111,7 @@ func DeleteAdmin(c *gin.Context) {
 		return
 	}
 
-	// delete admin account
-	adminMdl.Collection().FindOneAndDelete(c, bson.M{"username": req.Username})
+	// Delete admin account
+	adminMdl.DeleteByUsername(req.Username)
 	c.JSON(http.StatusOK, gin.H{"message": "OK"})
 }

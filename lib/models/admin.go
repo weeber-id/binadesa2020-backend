@@ -6,23 +6,29 @@ import (
 	"binadesa2020-backend/lib/variable"
 	"context"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"gopkg.in/mgo.v2/bson"
 )
 
 // Admin models in mongoDB
 type Admin struct {
-	ID       primitive.ObjectID `bson:"_id,omitempty" json:",omitempty"`
-	Username string             `bson:"username"`
-	Password string             `bson:"password" json:"-"`
-	Name     string             `bson:"name"`
-	Level    int                `bson:"level"`
+	Base     `bson:",inline"`
+	Username string `bson:"username"`
+	Password string `bson:"password" json:"-"`
+	Name     string `bson:"name"`
+	Level    int    `bson:"level"`
 }
 
 // Collection for admin data
 func (Admin) Collection() *mongo.Collection {
 	return mongodb.DB.Collection(variable.CollectionNames.Admin)
+}
+
+// Create admin from this struct
+func (a *Admin) Create() (*mongo.InsertOneResult, error) {
+	a.CreatedAt = variable.DateTimeNowPtr()
+	a.ModifiedAt = variable.DateTimeNowPtr()
+	return a.Collection().InsertOne(context.Background(), *a)
 }
 
 // FindByUsername and write to internal variable
@@ -32,6 +38,11 @@ func (a *Admin) FindByUsername(username string) bool {
 		return false
 	}
 	return true
+}
+
+// DeleteByUsername static method
+func (a Admin) DeleteByUsername(username string) *mongo.SingleResult {
+	return a.Collection().FindOneAndDelete(context.Background(), bson.M{"username": username})
 }
 
 // Verify username and password return true is verify and vice versa

@@ -30,7 +30,11 @@ func main() {
 		adminGroup.GET("/accounts", controllers.GetAllAdmin)
 		adminGroup.POST("/account", controllers.CreateAdmin)
 		adminGroup.DELETE("/account", controllers.DeleteAdmin)
+
+		adminGroup.GET("/complaints", controllers.GetAllComplaint)
 	}
+
+	router.POST("/complaint", controllers.CreateComplaint)
 
 	router.Run(":8080")
 }
