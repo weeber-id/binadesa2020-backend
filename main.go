@@ -35,6 +35,11 @@ func main() {
 		adminGroup.DELETE("/account", controllers.DeleteAdmin)
 
 		adminGroup.GET("/complaints", controllers.GetAllComplaint)
+
+		submissionGroup := adminGroup.Group("/submission")
+		{
+			submissionGroup.GET("/kartu-keluarga", kartukeluarga.Get)
+		}
 	}
 
 	router.POST("/complaint", controllers.CreateComplaint)

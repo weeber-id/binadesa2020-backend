@@ -3,20 +3,19 @@ package models
 import (
 	"binadesa2020-backend/lib/services/mongodb"
 	"binadesa2020-backend/lib/variable"
+
 	"context"
 
-	"gopkg.in/mgo.v2/bson"
-
 	"go.mongodb.org/mongo-driver/bson/primitive"
-
 	"go.mongodb.org/mongo-driver/mongo"
+	"gopkg.in/mgo.v2/bson"
 )
 
 // KartuKeluarga submission structur
 type KartuKeluarga struct {
-	Base               `bson:",inline"`
+	BaseSubmission     `bson:",inline"`
 	NamaKepalaKeluarga string             `bson:"nama_kepala_keluarga"`
-	NoTelp             string             `bson:"no_telp"`
+	Email              string             `bson:"email"`
 	File               KartuKeluargaFiles `bson:"file"`
 }
 
@@ -34,17 +33,16 @@ func (KartuKeluarga) Collection() *mongo.Collection {
 }
 
 // Create submission from this struct
-// Modify date, insert to DB, and get ID
+// generate unique code
+// modify date, insert to DB,
+// get ID from database
 func (k *KartuKeluarga) Create() (*mongo.InsertOneResult, error) {
-	now := variable.DateTimeNowPtr()
-	k.CreatedAt = now
-	k.ModifiedAt = now
+	k.InitCreate()
 
 	result, err := k.Collection().InsertOne(context.Background(), *k)
 	if err != nil {
 		return nil, err
 	}
-
 	k.ID = result.InsertedID.(primitive.ObjectID)
 	return result, nil
 }

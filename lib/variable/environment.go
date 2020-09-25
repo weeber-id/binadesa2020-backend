@@ -1,6 +1,8 @@
 package variable
 
 import (
+	"binadesa2020-backend/lib/clog"
+	"errors"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -42,4 +44,9 @@ func Initialization() {
 	MinioConfig.SecretKey = os.Getenv("MINIO_SECRET_KEY")
 
 	JWTConfig.Key = os.Getenv("JWY_SECRET_KEY")
+
+	ProjectName = os.Getenv("PROJECT_NAME")
+	if ProjectName == "" {
+		clog.Fatal(errors.New("PROJECT_NAME variable environment is null"), "init variable environment")
+	}
 }

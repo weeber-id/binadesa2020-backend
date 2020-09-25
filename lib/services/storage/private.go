@@ -4,16 +4,9 @@ import (
 	"binadesa2020-backend/lib/variable"
 	"bytes"
 	"context"
-	"fmt"
 
 	"github.com/minio/minio-go/v7"
 )
-
-// BaseObject minio storage
-type BaseObject struct {
-	ObjectName string
-	File       []byte
-}
 
 // PrivateObject minio storage
 type PrivateObject struct {
@@ -28,14 +21,12 @@ func (p *PrivateObject) Upload(ctx context.Context) (*minio.UploadInfo, error) {
 		variable.ProjectName,
 		p.ObjectName,
 		bytes.NewReader(p.File),
-		int64(len(p.File)),
+		p.Size,
 		minio.PutObjectOptions{},
 	)
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Println(info.Location)
 	return &info, nil
 }
 

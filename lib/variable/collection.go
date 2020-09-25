@@ -22,4 +22,4 @@ var CollectionNames collection = collection{
 }
 
 // ProjectName for vokasi: bina desa
-var ProjectName string = "vokasi-binadesa"
+var ProjectName string
