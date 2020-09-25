@@ -13,10 +13,10 @@ import (
 // Admin models in mongoDB
 type Admin struct {
 	Base     `bson:",inline"`
-	Username string `bson:"username"`
+	Username string `bson:"username" json:"username"`
 	Password string `bson:"password" json:"-"`
-	Name     string `bson:"name"`
-	Level    int    `bson:"level"`
+	Name     string `bson:"name" json:"name"`
+	Level    int    `bson:"level" json:"level"`
 }
 
 // Collection for admin data

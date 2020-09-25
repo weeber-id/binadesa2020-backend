@@ -12,11 +12,11 @@ import (
 // Untuk kolom pengaduan dari warga
 type Complaint struct {
 	Base      `bson:",inline"`
-	Name      string `bson:"name"`
-	RT        string `bson:"RT"`
-	RW        string `bson:"RW"`
-	Address   string `bson:"address"`
-	Complaint string `bson:"complaint"`
+	Name      string `bson:"name" json:"name"`
+	RT        string `bson:"RT" json:"rt"`
+	RW        string `bson:"RW" json:"rw"`
+	Address   string `bson:"address" json:"address"`
+	Complaint string `bson:"complaint" json:"complaint"`
 }
 
 // Collection for complaint data

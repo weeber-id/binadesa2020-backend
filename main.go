@@ -39,6 +39,7 @@ func main() {
 		submissionGroup := adminGroup.Group("/submission")
 		{
 			submissionGroup.GET("/kartu-keluarga", kartukeluarga.Get)
+			submissionGroup.PATCH("/kartu-keluarga", kartukeluarga.Update)
 		}
 	}
 
