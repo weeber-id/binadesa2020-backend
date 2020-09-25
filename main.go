@@ -25,28 +25,32 @@ func main() {
 	defer mongodb.Client.Disconnect(ctx)
 
 	router := gin.Default()
-	router.POST("/login", controllers.Login)
-
-	adminGroup := router.Group("/admin")
-	adminGroup.Use(middleware.AdminAuthorization())
+	root := router.Group("/api")
 	{
-		adminGroup.GET("/accounts", controllers.GetAllAdmin)
-		adminGroup.POST("/account", controllers.CreateAdmin)
-		adminGroup.DELETE("/account", controllers.DeleteAdmin)
+		root.GET("/", controllers.HealthCheck)
+		root.POST("/login", controllers.Login)
+		root.POST("/complaint", controllers.CreateComplaint)
 
-		adminGroup.GET("/complaints", controllers.GetAllComplaint)
-
-		submissionGroup := adminGroup.Group("/submission")
+		adminGroup := root.Group("/admin")
+		adminGroup.Use(middleware.AdminAuthorization())
 		{
-			submissionGroup.GET("/kartu-keluarga", kartukeluarga.Get)
-			submissionGroup.PATCH("/kartu-keluarga", kartukeluarga.Update)
-		}
-	}
+			adminGroup.GET("/accounts", controllers.GetAllAdmin)
+			adminGroup.POST("/account", controllers.CreateAdmin)
+			adminGroup.DELETE("/account", controllers.DeleteAdmin)
 
-	router.POST("/complaint", controllers.CreateComplaint)
-	submissionGroup := router.Group("/submission")
-	{
-		submissionGroup.POST("/kartu-keluarga", kartukeluarga.Submission)
+			adminGroup.GET("/complaints", controllers.GetAllComplaint)
+
+			adminSubmissionGroup := adminGroup.Group("/submission")
+			{
+				adminSubmissionGroup.GET("/kartu-keluarga", kartukeluarga.Get)
+				adminSubmissionGroup.PATCH("/kartu-keluarga", kartukeluarga.Update)
+			}
+		}
+
+		submissionGroup := root.Group("/submission")
+		{
+			submissionGroup.POST("/kartu-keluarga", kartukeluarga.Submission)
+		}
 	}
 
 	router.Run(":8080")
