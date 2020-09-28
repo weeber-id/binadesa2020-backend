@@ -49,6 +49,22 @@ func (a *AktaKelahiran) Create() (*mongo.InsertOneResult, error) {
 	return result, nil
 }
 
+// GetByUniqueCode and write in this variable
+// return isfound and error
+func (a *AktaKelahiran) GetByUniqueCode(code string) (bool, error) {
+	var empty AktaKelahiran
+
+	err := a.Collection().FindOne(context.Background(), bson.M{"unique_code": code}).Decode(a)
+	if err != nil {
+		return false, err
+	}
+
+	if *a == empty {
+		return false, nil
+	}
+	return true, nil
+}
+
 // Update this struct to database
 func (a *AktaKelahiran) Update() (*mongo.UpdateResult, error) {
 	a.ModifiedAt = variable.DateTimeNowPtr()

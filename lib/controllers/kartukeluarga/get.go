@@ -80,5 +80,5 @@ func GetOne(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": karkel})
+	c.JSON(http.StatusOK, gin.H{"message": "OK", "data": karkel})
 }

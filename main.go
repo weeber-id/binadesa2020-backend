@@ -54,6 +54,7 @@ func main() {
 			submissionGroup.GET("/kartu-keluarga", kartukeluarga.GetOne)
 			submissionGroup.POST("/kartu-keluarga", kartukeluarga.Submission)
 
+			submissionGroup.GET("/akta-kelahiran", aktakelahiran.GetOne)
 			submissionGroup.POST("/akta-kelahiran", aktakelahiran.Submission)
 		}
 	}
