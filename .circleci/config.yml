@@ -11,6 +11,10 @@ jobs:
       - setup_remote_docker
 
       - run:
+          name: Give version tag to Docker Image
+          command: IMAGE_NAME=${IMAGE_NAME}:`cat VERSION`
+
+      - run:
           name: Build Docker Image
           command: docker build -t $IMAGE_NAME .
 
