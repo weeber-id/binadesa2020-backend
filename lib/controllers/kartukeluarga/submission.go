@@ -64,8 +64,8 @@ func Submission(c *gin.Context) {
 	// object naming
 	code := newSubmission.UniqueCode
 	objectName := map[string]string{
-		"ktp_suami":   "pengajuan/kartu-keluarga/" + code + "/ktpsuami." + tools.GetExtension(ktpSuamiHeader.Filename),
-		"ktp_istri":   "pengajuan/kartu-keluarga/" + code + "/ktpistri." + tools.GetExtension(ktpIstriHeader.Filename),
+		"ktp_suami":   "pengajuan/kartu-keluarga/" + code + "/ktp_suami." + tools.GetExtension(ktpSuamiHeader.Filename),
+		"ktp_istri":   "pengajuan/kartu-keluarga/" + code + "/ktp_istri." + tools.GetExtension(ktpIstriHeader.Filename),
 		"surat_nikah": "pengajuan/kartu-keluarga/" + code + "/surat_nikah." + tools.GetExtension(suratNikahHeader.Filename),
 	}
 	if aktaKelahiranAnakHeader.Filename != "" {
@@ -85,33 +85,31 @@ func Submission(c *gin.Context) {
 		defer wg.Done()
 		ktpSuamiObj.LoadFileHeader(ktpSuamiHeader, objectName["ktp_suami"])
 		ktpSuamiObj.Upload(c)
+		newSubmission.File.KTPSuami = objectName["ktp_suami"]
 	}()
 	go func() {
 		defer wg.Done()
 		ktpIstriObj.LoadFileHeader(ktpIstriHeader, objectName["ktp_istri"])
 		ktpIstriObj.Upload(c)
+		newSubmission.File.KTPIstri = objectName["ktp_istri"]
 	}()
 	go func() {
 		defer wg.Done()
 		suratNikahObj.LoadFileHeader(suratNikahHeader, objectName["surat_nikah"])
 		suratNikahObj.Upload(c)
+		newSubmission.File.SuratNikah = objectName["surat_nikah"]
 	}()
 	go func() {
 		defer wg.Done()
 		aktaKelahiranAnakObj.LoadFileHeader(aktaKelahiranAnakHeader, objectName["akta_kelahiran_anak"])
 		aktaKelahiranAnakObj.Upload(c)
+		newSubmission.File.AktaKelahiranAnak = objectName["akta_kelahiran_anak"]
 	}()
 	wg.Wait()
 
-	newFiles := &models.KartuKeluargaFiles{
-		KTPSuami:          objectName["ktp_suami"],
-		KTPIstri:          objectName["ktp_istri"],
-		SuratNikah:        objectName["surat_nikah"],
-		AktaKelahiranAnak: objectName["akta_kelahiran_anak"],
-	}
-	_, err = newSubmission.ChangeAllFiles(newFiles)
+	_, err = newSubmission.Update()
 	if err != nil {
-		clog.Panic(err, "change kartukeluarga all files")
+		clog.Panic(err, "update kartu keluarga files struct")
 	}
 
 	c.JSON(http.StatusOK, gin.H{
