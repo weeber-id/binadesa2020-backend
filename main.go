@@ -47,7 +47,8 @@ func main() {
 				adminSubmissionGroup.GET("/kartu-keluarga", kartukeluarga.Get)
 				adminSubmissionGroup.PATCH("/kartu-keluarga", kartukeluarga.Update)
 
-				adminSubmissionGroup.GET("akta-kelahiran", aktakelahiran.Get)
+				adminSubmissionGroup.GET("/akta-kelahiran", aktakelahiran.Get)
+				adminSubmissionGroup.PATCH("/akta-kelahiran", aktakelahiran.Update)
 			}
 		}
 
