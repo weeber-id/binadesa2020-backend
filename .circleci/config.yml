@@ -15,6 +15,7 @@ jobs:
           command: |
             echo 'export IMAGE_NAME=${IMAGE_NAME}:`cat VERSION`' >> $BASH_ENV
             source $BASH_ENV
+            echo $IMAGE_NAME
 
       - run:
           name: Build Docker Image
