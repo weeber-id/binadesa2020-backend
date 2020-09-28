@@ -19,7 +19,9 @@ jobs:
 
       - run:
           name: Build Docker Image
-          command: docker build -t $IMAGE_NAME .
+          command: |
+            echo $IMAGE_NAME
+            docker build -t $IMAGE_NAME .
 
       - run:
           name: Authentication to Container Registry
