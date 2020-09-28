@@ -50,6 +50,7 @@ func main() {
 
 		submissionGroup := root.Group("/submission")
 		{
+			submissionGroup.GET("/kartu-keluarga", kartukeluarga.GetOne)
 			submissionGroup.POST("/kartu-keluarga", kartukeluarga.Submission)
 		}
 	}
