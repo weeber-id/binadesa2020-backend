@@ -2,6 +2,7 @@ package main
 
 import (
 	"binadesa2020-backend/lib/controllers"
+	"binadesa2020-backend/lib/controllers/aktakelahiran"
 	"binadesa2020-backend/lib/controllers/kartukeluarga"
 	"binadesa2020-backend/lib/middleware"
 	"binadesa2020-backend/lib/services/mongodb"
@@ -52,6 +53,8 @@ func main() {
 		{
 			submissionGroup.GET("/kartu-keluarga", kartukeluarga.GetOne)
 			submissionGroup.POST("/kartu-keluarga", kartukeluarga.Submission)
+
+			submissionGroup.POST("/akta-kelahiran", aktakelahiran.Submission)
 		}
 	}
 

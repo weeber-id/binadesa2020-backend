@@ -74,6 +74,7 @@ func Submission(c *gin.Context) {
 		objectName["akta_kelahiran_anak"] = ""
 	}
 
+	// upload file to minio storage
 	ktpSuamiObj := &storage.PrivateObject{}
 	ktpIstriObj := &storage.PrivateObject{}
 	suratNikahObj := &storage.PrivateObject{}
