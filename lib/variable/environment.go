@@ -3,6 +3,8 @@ package variable
 import (
 	"binadesa2020-backend/lib/clog"
 	"errors"
+	"io/ioutil"
+	"log"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -29,9 +31,19 @@ var MinioConfig struct {
 	SecretKey   string
 }
 
+// Version this service
+var Version string
+
 // Initialization read from variable environment
 func Initialization() {
 	godotenv.Load("devel.env")
+
+	// Reading version
+	ver, err := ioutil.ReadFile("./VERSION")
+	if err != nil {
+		log.Fatalf("read version file %v \n", err)
+	}
+	Version = string(ver)
 
 	MongoConfig.Host = os.Getenv("DB_MONGO_HOST")
 	MongoConfig.Database = os.Getenv("DB_MONGO_NAME")

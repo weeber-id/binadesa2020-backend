@@ -10,5 +10,9 @@ import (
 // HealthCheck with message and datetime now
 func HealthCheck(c *gin.Context) {
 	now := variable.DateTimeNowPtr()
-	c.JSON(http.StatusOK, gin.H{"message": "works", "datetime": now})
+	c.JSON(http.StatusOK, gin.H{
+		"message":  "works",
+		"version":  variable.Version,
+		"datetime": now,
+	})
 }
