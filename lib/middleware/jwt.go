@@ -4,7 +4,6 @@ import (
 	"binadesa2020-backend/lib/models"
 	"binadesa2020-backend/lib/variable"
 	"net/http"
-	"strings"
 
 	"github.com/dgrijalva/jwt-go"
 
@@ -14,18 +13,26 @@ import (
 // AdminAuthorization using JWT
 func AdminAuthorization() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// Get JWT from Header
-		authHeader := c.Request.Header["Authorization"]
-		if authHeader == nil {
-			c.JSON(http.StatusBadRequest, gin.H{"message": "Missing Authorization Header"})
-			c.Abort()
+		// // Get JWT from Header
+		// authHeader := c.Request.Header["Authorization"]
+		// if authHeader == nil {
+		// 	c.JSON(http.StatusBadRequest, gin.H{"message": "Missing Authorization Header"})
+		// 	c.Abort()
+		// 	return
+		// }
+		// token := strings.Split(authHeader[0], " ")[1]
+
+		// Get Access Token from cookies
+		svcConfig := variable.ServiceConfig
+		token, err := c.Cookie(svcConfig.TokenName)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "You must login before"})
 			return
 		}
-		token := strings.Split(authHeader[0], " ")[1]
 
 		// Decode JWT
 		claims := jwt.MapClaims{}
-		_, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
+		_, err = jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
 			return []byte(variable.JWTConfig.Key), nil
 		})
 		if err != nil {

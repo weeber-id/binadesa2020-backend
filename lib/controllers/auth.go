@@ -42,6 +42,9 @@ func Login(c *gin.Context) {
 	token, err := at.SignedString([]byte(config.Key))
 	clog.Panic2Response(c, err, "generate JWT token")
 
+	svcConfig := variable.ServiceConfig
+	c.SetCookie(svcConfig.TokenName, token, 3600*24, svcConfig.Path, svcConfig.Domain, svcConfig.HTTPS, true)
+
 	data := struct {
 		Admin       models.Admin `json:"admin"`
 		AccessToken string       `json:"access_token"`
@@ -51,4 +54,13 @@ func Login(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": data})
+}
+
+// Logout admin
+// delete cookies from backend
+func Logout(c *gin.Context) {
+	config := variable.ServiceConfig
+	c.SetCookie(config.TokenName, "", 0, config.Path, config.Domain, config.HTTPS, true)
+
+	c.JSON(http.StatusOK, gin.H{"message": "logout success"})
 }

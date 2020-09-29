@@ -31,6 +31,7 @@ func main() {
 	{
 		root.GET("/", controllers.HealthCheck)
 		root.POST("/login", controllers.Login)
+		root.POST("/logout", controllers.Logout)
 		root.POST("/complaint", controllers.CreateComplaint)
 
 		adminGroup := root.Group("/admin")

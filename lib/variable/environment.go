@@ -10,6 +10,21 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// Mode this services
+// local, staging, production
+var Mode string
+
+// Version this service
+var Version string
+
+// ServiceConfig this service
+var ServiceConfig struct {
+	Domain    string
+	Path      string
+	HTTPS     bool
+	TokenName string
+}
+
 // MongoConfig data type
 var MongoConfig struct {
 	Host     string
@@ -31,12 +46,32 @@ var MinioConfig struct {
 	SecretKey   string
 }
 
-// Version this service
-var Version string
-
 // Initialization read from variable environment
 func Initialization() {
 	godotenv.Load("devel.env")
+
+	// Reading Mode and set service configuration
+	Mode = os.Getenv("MODE")
+	if Mode == "" {
+		log.Fatal(errors.New("MODE variable environment is null"))
+	}
+	ServiceConfig.TokenName = "admin_token"
+	switch Mode {
+	case "local":
+		ServiceConfig.Domain = "103.56.148.65:8080"
+		ServiceConfig.Path = "/api"
+		ServiceConfig.HTTPS = false
+	case "staging":
+		ServiceConfig.Domain = "staging-binadesa.weeber.id"
+		ServiceConfig.Path = "/api"
+		ServiceConfig.HTTPS = true
+	case "production":
+		ServiceConfig.Domain = "telukjambe.id"
+		ServiceConfig.Path = "/api"
+		ServiceConfig.HTTPS = true
+	default:
+		log.Fatal(errors.New("Invalid MODE, must be: local, staging, production"))
+	}
 
 	// Reading version
 	ver, err := ioutil.ReadFile("./VERSION")
