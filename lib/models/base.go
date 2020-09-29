@@ -15,6 +15,14 @@ type Base struct {
 	ModifiedAt *time.Time         `bson:"modified_at,omitempty" json:"modified_at"`
 }
 
+// InitDate in createdAt and modifiedAt
+func (b *Base) InitDate() error {
+	now := variable.DateTimeNowPtr()
+	b.CreatedAt = now
+	b.ModifiedAt = now
+	return nil
+}
+
 // BaseSubmission for submission
 type BaseSubmission struct {
 	Base       `bson:",inline"`
@@ -29,15 +37,12 @@ type BaseSubmission struct {
 }
 
 // InitCreate from this struct
-// generate unique code
 // modify date
+// generate unique code
 func (b *BaseSubmission) InitCreate() error {
+	b.InitDate()
+
 	b.UniqueCode = tools.RandomString(6)
 	b.StatusCode = 0
-
-	now := variable.DateTimeNowPtr()
-	b.CreatedAt = now
-	b.ModifiedAt = now
-
 	return nil
 }
