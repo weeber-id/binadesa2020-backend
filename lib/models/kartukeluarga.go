@@ -70,17 +70,3 @@ func (k *KartuKeluarga) Update() (*mongo.UpdateResult, error) {
 	update := bson.M{"$set": *k}
 	return k.Collection().UpdateOne(context.Background(), bson.M{"_id": k.ID}, update)
 }
-
-// ChangeAllFiles submission to this struct
-// Change files in this struct, update to DB based on this ID
-func (k *KartuKeluarga) ChangeAllFiles(files *KartuKeluargaFiles) (*mongo.UpdateResult, error) {
-	k.File = *files
-
-	update := bson.M{"$set": *k}
-	result, err := k.Collection().UpdateOne(context.Background(), bson.M{"_id": k.ID}, update)
-	if err != nil {
-		return nil, err
-	}
-	k.ModifiedAt = variable.DateTimeNowPtr()
-	return result, nil
-}

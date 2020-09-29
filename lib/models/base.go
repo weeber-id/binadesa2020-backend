@@ -13,7 +13,6 @@ type Base struct {
 	ID         primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
 	CreatedAt  *time.Time         `bson:"created_at,omitempty" json:"created_at"`
 	ModifiedAt *time.Time         `bson:"modified_at,omitempty" json:"modified_at"`
-	// DeletedAt  *time.Time         `bson:"deleted_at,omitempty"`
 }
 
 // BaseSubmission for submission
