@@ -46,9 +46,18 @@ var MinioConfig struct {
 	SecretKey   string
 }
 
+// GmailConfig for binadesa email
+var GmailConfig struct {
+	Email    string
+	Password string
+}
+
 // Initialization read from variable environment
 func Initialization() {
 	godotenv.Load("devel.env")
+
+	GmailConfig.Email = "weeber.id@gmail.com"
+	GmailConfig.Password = os.Getenv("GMAIL_PASS")
 
 	// Reading Mode and set service configuration
 	Mode = os.Getenv("MODE")

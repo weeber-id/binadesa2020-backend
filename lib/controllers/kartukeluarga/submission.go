@@ -3,6 +3,7 @@ package kartukeluarga
 import (
 	"binadesa2020-backend/lib/clog"
 	"binadesa2020-backend/lib/models"
+	"binadesa2020-backend/lib/services/gmail"
 	"binadesa2020-backend/lib/services/storage"
 	"binadesa2020-backend/lib/tools"
 	"mime/multipart"
@@ -111,6 +112,12 @@ func Submission(c *gin.Context) {
 	if err != nil {
 		clog.Panic(err, "update kartu keluarga files struct")
 	}
+
+	// Sending receive email
+	go func() {
+		email := &gmail.Email{To: req.Email}
+		email.SendReceiveSubmission("Kartu Keluarga")
+	}()
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Created",
