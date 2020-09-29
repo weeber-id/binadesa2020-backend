@@ -55,6 +55,8 @@ func main() {
 
 		submissionGroup := root.Group("/submission")
 		{
+			submissionGroup.GET("/find", controllers.GetSubmissionByCode)
+
 			submissionGroup.GET("/kartu-keluarga", kartukeluarga.GetOne)
 			submissionGroup.POST("/kartu-keluarga", kartukeluarga.Submission)
 
