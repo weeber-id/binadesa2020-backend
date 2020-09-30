@@ -56,6 +56,8 @@ func main() {
 
 			adminGroup.GET("/complaints", controllers.GetAllComplaint)
 
+			adminGroup.POST("/news", news.Create)
+
 			adminSubmissionGroup := adminGroup.Group("/submission")
 			{
 				adminSubmissionGroup.GET("/kartu-keluarga", kartukeluarga.Get)
