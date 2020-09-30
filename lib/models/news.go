@@ -47,12 +47,19 @@ func (n *News) Create() (*mongo.InsertOneResult, error) {
 
 // GetByID news and write into this struct
 func (n *News) GetByID(ID string) error {
-	return n.Collection().FindOne(context.Background(), bson.M{"_id": ID}).Decode(n)
+	objectID, _ := primitive.ObjectIDFromHex(ID)
+	return n.Collection().FindOne(context.Background(), bson.M{"_id": objectID}).Decode(n)
 }
 
 // GetBySlug news and write into this struct
 func (n *News) GetBySlug(slug string) error {
 	return n.Collection().FindOne(context.Background(), bson.M{"slug": slug}).Decode(n)
+}
+
+// GetBySlugFromURLQuery to decode and then find the news in the database
+func (n *News) GetBySlugFromURLQuery(urlSlug string) error {
+	slugEncode := url.QueryEscape(urlSlug)
+	return n.GetBySlug(slugEncode)
 }
 
 // Update news and save to database

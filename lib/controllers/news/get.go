@@ -41,7 +41,7 @@ func Get(c *gin.Context) {
 
 		// Get By Slug
 		if req.Slug != nil {
-			news.GetBySlug(*req.Slug)
+			news.GetBySlugFromURLQuery(*req.Slug)
 		}
 
 		// check if news not found

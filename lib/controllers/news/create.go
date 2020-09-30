@@ -12,9 +12,9 @@ import (
 func Create(c *gin.Context) {
 	var req struct {
 		Author     string `json:"author" binding:"required"`
-		Title      string `json:"title" binding:"title"`
-		ImageCover string `json:"image_cover" binding:"image_cover"`
-		Content    string `json:"content" binding:"content"`
+		Title      string `json:"title" binding:"required"`
+		ImageCover string `json:"image_cover" binding:"required"`
+		Content    string `json:"content" binding:"required"`
 	}
 
 	// extract JSON parameter
