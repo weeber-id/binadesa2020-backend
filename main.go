@@ -4,6 +4,7 @@ import (
 	"binadesa2020-backend/lib/controllers"
 	"binadesa2020-backend/lib/controllers/aktakelahiran"
 	"binadesa2020-backend/lib/controllers/kartukeluarga"
+	"binadesa2020-backend/lib/controllers/news"
 	"binadesa2020-backend/lib/middleware"
 	"binadesa2020-backend/lib/services/mongodb"
 	"binadesa2020-backend/lib/services/storage"
@@ -33,6 +34,18 @@ func main() {
 		root.POST("/login", controllers.Login)
 		root.POST("/logout", controllers.Logout)
 		root.POST("/complaint", controllers.CreateComplaint)
+		root.GET("/news", news.Get)
+
+		submissionGroup := root.Group("/submission")
+		{
+			submissionGroup.GET("/find", controllers.GetSubmissionByCode)
+
+			submissionGroup.GET("/kartu-keluarga", kartukeluarga.GetOne)
+			submissionGroup.POST("/kartu-keluarga", kartukeluarga.Submission)
+
+			submissionGroup.GET("/akta-kelahiran", aktakelahiran.GetOne)
+			submissionGroup.POST("/akta-kelahiran", aktakelahiran.Submission)
+		}
 
 		adminGroup := root.Group("/admin")
 		adminGroup.Use(middleware.AdminAuthorization())
@@ -51,17 +64,6 @@ func main() {
 				adminSubmissionGroup.GET("/akta-kelahiran", aktakelahiran.Get)
 				adminSubmissionGroup.PATCH("/akta-kelahiran", aktakelahiran.Update)
 			}
-		}
-
-		submissionGroup := root.Group("/submission")
-		{
-			submissionGroup.GET("/find", controllers.GetSubmissionByCode)
-
-			submissionGroup.GET("/kartu-keluarga", kartukeluarga.GetOne)
-			submissionGroup.POST("/kartu-keluarga", kartukeluarga.Submission)
-
-			submissionGroup.GET("/akta-kelahiran", aktakelahiran.GetOne)
-			submissionGroup.POST("/akta-kelahiran", aktakelahiran.Submission)
 		}
 	}
 
