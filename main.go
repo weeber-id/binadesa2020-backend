@@ -5,6 +5,7 @@ import (
 	"binadesa2020-backend/lib/controllers/aktakelahiran"
 	"binadesa2020-backend/lib/controllers/kartukeluarga"
 	"binadesa2020-backend/lib/controllers/news"
+	"binadesa2020-backend/lib/controllers/suratketerangan"
 	"binadesa2020-backend/lib/middleware"
 	"binadesa2020-backend/lib/services/mongodb"
 	"binadesa2020-backend/lib/services/storage"
@@ -45,6 +46,9 @@ func main() {
 
 			submissionGroup.GET("/akta-kelahiran", aktakelahiran.GetOne)
 			submissionGroup.POST("/akta-kelahiran", aktakelahiran.Submission)
+
+			submissionGroup.GET("/surat-keterangan", suratketerangan.GetOne)
+			submissionGroup.POST("/surat-keterangan", suratketerangan.Submission)
 		}
 
 		adminGroup := root.Group("/admin")
@@ -58,6 +62,7 @@ func main() {
 
 			adminGroup.POST("/news", news.Create)
 			adminGroup.PUT("/news", news.Update)
+			adminGroup.DELETE("/news", news.Delete)
 
 			adminSubmissionGroup := adminGroup.Group("/submission")
 			{
@@ -66,6 +71,9 @@ func main() {
 
 				adminSubmissionGroup.GET("/akta-kelahiran", aktakelahiran.Get)
 				adminSubmissionGroup.PATCH("/akta-kelahiran", aktakelahiran.Update)
+
+				adminSubmissionGroup.GET("/surat-keterangan", suratketerangan.Get)
+				adminSubmissionGroup.PATCH("/surat-keterangan", suratketerangan.Update)
 			}
 		}
 	}

@@ -9,8 +9,9 @@ type collection struct {
 }
 
 type submission struct {
-	KartuKeluarga string
-	AktaKelahiran string
+	KartuKeluarga   string
+	AktaKelahiran   string
+	SuratKeterangan string
 }
 
 // CollectionNames in MongoDB
@@ -20,8 +21,9 @@ var CollectionNames collection = collection{
 	Complaint: "complaint",
 	News:      "news",
 	SubMission: submission{
-		KartuKeluarga: "submissionKartuKeluarga",
-		AktaKelahiran: "submissionAktaKelahiran",
+		KartuKeluarga:   "submissionKartuKeluarga",
+		AktaKelahiran:   "submissionAktaKelahiran",
+		SuratKeterangan: "submissionSuratKeterangan",
 	},
 }
 

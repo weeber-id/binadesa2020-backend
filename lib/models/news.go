@@ -69,3 +69,8 @@ func (n *News) Update() (*mongo.UpdateResult, error) {
 	update := bson.M{"$set": *n}
 	return n.Collection().UpdateOne(context.Background(), bson.M{"_id": n.ID}, update)
 }
+
+// Delete news
+func (n *News) Delete() *mongo.SingleResult {
+	return n.Collection().FindOneAndDelete(context.Background(), bson.M{"_id": n.ID})
+}
