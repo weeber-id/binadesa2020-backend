@@ -2,6 +2,8 @@ package news
 
 import (
 	"binadesa2020-backend/lib/models"
+	"fmt"
+	"math"
 	"net/http"
 
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -82,5 +84,16 @@ func Get(c *gin.Context) {
 		multiNews = append(multiNews, &news)
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "OK", "data": multiNews})
+	// get max num page
+	num, _ := newsMdl.Collection().CountDocuments(c, bson.M{})
+	maxPage := math.Ceil(float64(num) / float64(*req.ContentPerPage))
+
+	fmt.Println(num)
+	fmt.Println(int64(*req.ContentPerPage))
+
+	c.JSON(http.StatusOK, gin.H{
+		"message":  "OK",
+		"data":     multiNews,
+		"max_page": maxPage,
+	})
 }
