@@ -40,6 +40,14 @@ func (a *Admin) FindByUsername(username string) bool {
 	return true
 }
 
+// Update this struct to database
+func (a *Admin) Update() (*mongo.UpdateResult, error) {
+	a.ModifiedAt = variable.DateTimeNowPtr()
+
+	update := bson.M{"$set": *a}
+	return a.Collection().UpdateOne(context.Background(), bson.M{"_id": a.ID}, update)
+}
+
 // DeleteByUsername static method
 func (a Admin) DeleteByUsername(username string) *mongo.SingleResult {
 	return a.Collection().FindOneAndDelete(context.Background(), bson.M{"username": username})

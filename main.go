@@ -2,6 +2,7 @@ package main
 
 import (
 	"binadesa2020-backend/lib/controllers"
+	"binadesa2020-backend/lib/controllers/administrator"
 	"binadesa2020-backend/lib/controllers/aktakelahiran"
 	"binadesa2020-backend/lib/controllers/complaint"
 	"binadesa2020-backend/lib/controllers/kartukeluarga"
@@ -43,6 +44,7 @@ func main() {
 		{
 			submissionGroup.GET("/find", controllers.GetSubmissionByCode)
 
+			// TODO send email when create a submission
 			submissionGroup.GET("/kartu-keluarga", kartukeluarga.GetOne)
 			submissionGroup.POST("/kartu-keluarga", kartukeluarga.Submission)
 
@@ -56,10 +58,10 @@ func main() {
 		adminGroup := root.Group("/admin")
 		adminGroup.Use(middleware.AdminAuthorization())
 		{
-			// TODO adding update admin account for change password
-			adminGroup.GET("/accounts", controllers.GetAllAdmin)
-			adminGroup.POST("/account", controllers.CreateAdmin)
-			adminGroup.DELETE("/account", controllers.DeleteAdmin)
+			adminGroup.GET("/accounts", administrator.GetAll)
+			adminGroup.POST("/account", administrator.Create)
+			adminGroup.PATCH("/account/password", administrator.ChangePassword)
+			adminGroup.DELETE("/account", administrator.Delete)
 
 			adminGroup.GET("/complaints", complaint.Get)
 
@@ -72,6 +74,7 @@ func main() {
 
 			adminSubmissionGroup := adminGroup.Group("/submission")
 			{
+				// TODO send email when change status by admin
 				adminSubmissionGroup.GET("/kartu-keluarga", kartukeluarga.Get)
 				adminSubmissionGroup.PATCH("/kartu-keluarga", kartukeluarga.Update)
 

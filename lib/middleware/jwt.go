@@ -13,15 +13,6 @@ import (
 // AdminAuthorization using JWT
 func AdminAuthorization() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// // Get JWT from Header
-		// authHeader := c.Request.Header["Authorization"]
-		// if authHeader == nil {
-		// 	c.JSON(http.StatusBadRequest, gin.H{"message": "Missing Authorization Header"})
-		// 	c.Abort()
-		// 	return
-		// }
-		// token := strings.Split(authHeader[0], " ")[1]
-
 		// Get Access Token from cookies
 		svcConfig := variable.ServiceConfig
 		token, err := c.Cookie(svcConfig.TokenName)

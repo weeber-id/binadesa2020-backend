@@ -46,11 +46,9 @@ func Login(c *gin.Context) {
 	c.SetCookie(svcConfig.TokenName, token, 3600*24, svcConfig.Path, svcConfig.Domain, svcConfig.HTTPS, true)
 
 	data := struct {
-		Admin       models.Admin `json:"admin"`
-		AccessToken string       `json:"access_token"`
+		Admin models.Admin `json:"admin"`
 	}{
-		Admin:       admin,
-		AccessToken: token,
+		Admin: admin,
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": data})
