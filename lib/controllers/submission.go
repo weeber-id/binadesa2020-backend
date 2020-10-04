@@ -26,14 +26,16 @@ func GetSubmissionByCode(c *gin.Context) {
 	var (
 		karkel models.KartuKeluarga
 		akta   models.AktaKelahiran
+		sK     models.SuratKeterangan
 		data   struct {
-			AktaKelahiran *models.AktaKelahiran `json:"akta_kelahiran,omitempty"`
-			KartuKeluarga *models.KartuKeluarga `json:"kartu_keluarga,omitempty"`
+			AktaKelahiran   *models.AktaKelahiran   `json:"akta_kelahiran,omitempty"`
+			KartuKeluarga   *models.KartuKeluarga   `json:"kartu_keluarga,omitempty"`
+			SuratKeterangan *models.SuratKeterangan `json:"surat_keterangan,omitempty"`
 		}
 	)
 
 	// Search by unique code concurrently
-	wg.Add(2)
+	wg.Add(3)
 	go func() {
 		defer wg.Done()
 		akta.GetByUniqueCode(req.UniqueCode)
@@ -48,10 +50,19 @@ func GetSubmissionByCode(c *gin.Context) {
 			data.KartuKeluarga = &karkel
 		}
 	}()
+	go func() {
+		defer wg.Done()
+		sK.GetByUniqueCode(req.UniqueCode)
+		if (sK != models.SuratKeterangan{}) {
+			data.SuratKeterangan = &sK
+		}
+	}()
 	wg.Wait()
 
 	// if not found all of them
-	if data.AktaKelahiran == nil && data.KartuKeluarga == nil {
+	if data.AktaKelahiran == nil &&
+		data.KartuKeluarga == nil &&
+		data.SuratKeterangan == nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"message": "not found"})
 		return
 	}

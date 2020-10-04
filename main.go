@@ -5,6 +5,7 @@ import (
 	"binadesa2020-backend/lib/controllers/aktakelahiran"
 	"binadesa2020-backend/lib/controllers/complaint"
 	"binadesa2020-backend/lib/controllers/kartukeluarga"
+	"binadesa2020-backend/lib/controllers/media"
 	"binadesa2020-backend/lib/controllers/news"
 	"binadesa2020-backend/lib/controllers/suratketerangan"
 	"binadesa2020-backend/lib/middleware"
@@ -67,7 +68,7 @@ func main() {
 			adminGroup.DELETE("/news", news.Delete)
 
 			// TODO adding for download private object from storages
-			// TODO adding for upload public object from file and get public URL
+			adminGroup.POST("/media/public/upload", media.UploadPublicFile)
 
 			adminSubmissionGroup := adminGroup.Group("/submission")
 			{
