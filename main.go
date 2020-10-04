@@ -67,7 +67,7 @@ func main() {
 			adminGroup.PUT("/news", news.Update)
 			adminGroup.DELETE("/news", news.Delete)
 
-			// TODO adding for download private object from storages
+			adminGroup.POST("/media/private/download", media.DownloadPrivateFile)
 			adminGroup.POST("/media/public/upload", media.UploadPublicFile)
 
 			adminSubmissionGroup := adminGroup.Group("/submission")

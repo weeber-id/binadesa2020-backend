@@ -67,7 +67,7 @@ func Initialization() {
 	ServiceConfig.TokenName = "admin_token"
 	switch Mode {
 	case "local":
-		ServiceConfig.Domain = "103.56.148.65:8080"
+		ServiceConfig.Domain = "localhost:8080"
 		ServiceConfig.Path = "/api"
 		ServiceConfig.HTTPS = false
 	case "staging":
