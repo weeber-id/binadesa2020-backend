@@ -5,8 +5,8 @@ import (
 	"binadesa2020-backend/lib/models"
 	"net/http"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"gopkg.in/mgo.v2/bson"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,6 +15,7 @@ import (
 func Get(c *gin.Context) {
 	var req struct {
 		UniqueCode *string `form:"unique_code"`
+		StatusCode *int    `form:"status_code"`
 	}
 
 	// extract paramater from query
@@ -45,7 +46,15 @@ func Get(c *gin.Context) {
 
 	findOpt.SetSort(bson.M{"_id": -1}) // sort by latest ID
 
-	cur, err := karkelMdl.Collection().Find(c, bson.M{}, &findOpt)
+	// filtering
+	filter := bson.D{}
+
+	// filter by status code
+	if req.StatusCode != nil {
+		filter = append(filter, bson.E{"status_code", *req.StatusCode})
+	}
+
+	cur, err := karkelMdl.Collection().Find(c, filter, &findOpt)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		clog.Fatal(err, "get all kartu keluarga submission")

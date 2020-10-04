@@ -5,6 +5,9 @@ import (
 	"binadesa2020-backend/lib/variable"
 	"context"
 
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"gopkg.in/mgo.v2/bson"
+
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -29,4 +32,20 @@ func (c *Complaint) Create() (*mongo.InsertOneResult, error) {
 	c.CreatedAt = variable.DateTimeNowPtr()
 	c.ModifiedAt = variable.DateTimeNowPtr()
 	return c.Collection().InsertOne(context.Background(), *c)
+}
+
+// GetByID complaint and write into this struct
+func (c *Complaint) GetByID(ID string) (bool, error) {
+	var empty Complaint
+
+	objectID, _ := primitive.ObjectIDFromHex(ID)
+	err := c.Collection().FindOne(context.Background(), bson.M{"_id": objectID}).Decode(c)
+	if err != nil {
+		return false, err
+	}
+
+	if *c == empty {
+		return false, nil
+	}
+	return true, nil
 }

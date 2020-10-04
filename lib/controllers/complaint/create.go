@@ -1,19 +1,16 @@
-package controllers
+package complaint
 
 import (
 	"binadesa2020-backend/lib/clog"
 	"binadesa2020-backend/lib/models"
-	"context"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"gopkg.in/mgo.v2/bson"
 )
 
-// CreateComplaint to database
+// Create to database
 // Public access
-func CreateComplaint(c *gin.Context) {
+func Create(c *gin.Context) {
 	var req struct {
 		Name      string `json:"name" binding:"required"`
 		RT        string `json:"rt" binding:"required"`
@@ -40,27 +37,4 @@ func CreateComplaint(c *gin.Context) {
 	clog.Panic(err, "input complaint")
 
 	c.JSON(http.StatusOK, gin.H{"message": "OK", "data": res})
-}
-
-// GetAllComplaint list
-// Only admin can access this
-func GetAllComplaint(c *gin.Context) {
-	var (
-		compMdl models.Complaint
-		data    []*models.Complaint
-	)
-
-	ctx, cancel := context.WithTimeout(c, 5*time.Second)
-	defer cancel()
-
-	cur, err := compMdl.Collection().Find(ctx, bson.M{})
-	clog.Panic(err, "Find all complaint")
-
-	for cur.Next(ctx) {
-		var row models.Complaint
-		cur.Decode(&row)
-		data = append(data, &row)
-	}
-
-	c.JSON(http.StatusOK, gin.H{"message": "OK", "data": data})
 }

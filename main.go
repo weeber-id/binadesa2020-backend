@@ -3,6 +3,7 @@ package main
 import (
 	"binadesa2020-backend/lib/controllers"
 	"binadesa2020-backend/lib/controllers/aktakelahiran"
+	"binadesa2020-backend/lib/controllers/complaint"
 	"binadesa2020-backend/lib/controllers/kartukeluarga"
 	"binadesa2020-backend/lib/controllers/news"
 	"binadesa2020-backend/lib/controllers/suratketerangan"
@@ -34,7 +35,7 @@ func main() {
 		root.GET("/", controllers.HealthCheck)
 		root.POST("/login", controllers.Login)
 		root.POST("/logout", controllers.Logout)
-		root.POST("/complaint", controllers.CreateComplaint)
+		root.POST("/complaint", complaint.Create)
 		root.GET("/news", news.Get)
 
 		submissionGroup := root.Group("/submission")
@@ -54,15 +55,19 @@ func main() {
 		adminGroup := root.Group("/admin")
 		adminGroup.Use(middleware.AdminAuthorization())
 		{
+			// TODO adding update admin account for change password
 			adminGroup.GET("/accounts", controllers.GetAllAdmin)
 			adminGroup.POST("/account", controllers.CreateAdmin)
 			adminGroup.DELETE("/account", controllers.DeleteAdmin)
 
-			adminGroup.GET("/complaints", controllers.GetAllComplaint)
+			adminGroup.GET("/complaints", complaint.Get)
 
 			adminGroup.POST("/news", news.Create)
 			adminGroup.PUT("/news", news.Update)
 			adminGroup.DELETE("/news", news.Delete)
+
+			// TODO adding for download private object from storages
+			// TODO adding for upload public object from file and get public URL
 
 			adminSubmissionGroup := adminGroup.Group("/submission")
 			{

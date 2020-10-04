@@ -6,14 +6,15 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"gopkg.in/mgo.v2/bson"
 )
 
 // Get all or one for admin
 func Get(c *gin.Context) {
 	var req struct {
 		UniqueCode *string `form:"unique_code"`
+		StatusCode *int    `form:"status_code"`
 	}
 
 	// extract parameter
@@ -41,8 +42,17 @@ func Get(c *gin.Context) {
 		multisuratket []*models.SuratKeterangan
 	)
 
-	findOpt.SetSort(bson.M{"_id": -1})
-	cur, err := skmdl.Collection().Find(c, bson.M{}, &findOpt)
+	findOpt.SetSort(bson.M{"_id": -1}) // sort by latest
+
+	// filtering
+	filter := bson.D{}
+
+	// filter by status code
+	if req.StatusCode != nil {
+		filter = append(filter, bson.E{"status_code", *req.StatusCode})
+	}
+
+	cur, err := skmdl.Collection().Find(c, filter, &findOpt)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		clog.Fatal(err, "get all kartu keluarga submission")
