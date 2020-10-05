@@ -47,8 +47,10 @@ func Login(c *gin.Context) {
 
 	data := struct {
 		Admin models.Admin `json:"admin"`
+		AccessToken string `json:"access_token"`
 	}{
 		Admin: admin,
+		AccessToken: token,
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": data})
