@@ -9,10 +9,12 @@ import (
 // CORS for website
 func CORS() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		log.Printf("Request Host: %s", c.Request.Host)
-		switch c.Request.Host {
-		case "localhost:3000", "staging-binadesa.weeber.id", "telukjambe.id":
-			c.Writer.Header().Set("Access-Control-Allow-Origin", c.Request.Host)
+		origin := c.Request.Header.Get("origin")
+		log.Printf("Request Origin: %s", origin)
+
+		switch origin {
+		case "http://localhost:3000", "https://staging-binadesa.weeber.id", "https://telukjambe.id":
+			c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
 		}
 
 		c.Writer.Header().Set("Content-Type", "application/json")
