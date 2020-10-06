@@ -70,7 +70,17 @@ func Login(c *gin.Context) {
 // delete cookies from backend
 func Logout(c *gin.Context) {
 	config := variable.ServiceConfig
-	c.SetCookie(config.TokenName, "", 0, config.Path, config.Domain, config.HTTPS, true)
+	// c.SetCookie(config.TokenName, "", 0, config.Path, config.Domain, config.HTTPS, true)
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:     config.TokenName,
+		Value:    "",
+		Path:     config.Path,
+		Domain:   config.Domain,
+		MaxAge:   0,
+		Secure:   config.HTTPS,
+		HttpOnly: true,
+		SameSite: 4, // None
+	})
 
 	c.JSON(http.StatusOK, gin.H{"message": "logout success"})
 }
