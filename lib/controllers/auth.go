@@ -43,13 +43,23 @@ func Login(c *gin.Context) {
 	clog.Panic2Response(c, err, "generate JWT token")
 
 	svcConfig := variable.ServiceConfig
-	c.SetCookie(svcConfig.TokenName, token, 3600*24, svcConfig.Path, svcConfig.Domain, svcConfig.HTTPS, true)
+	// c.SetCookie(svcConfig.TokenName, token, 3600*24, svcConfig.Path, svcConfig.Domain, svcConfig.HTTPS, true)
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:     svcConfig.TokenName,
+		Value:    token,
+		Path:     svcConfig.Path,
+		Domain:   svcConfig.Domain,
+		MaxAge:   3600 * 24,
+		Secure:   svcConfig.HTTPS,
+		HttpOnly: true,
+		SameSite: 4, // None
+	})
 
 	data := struct {
-		Admin models.Admin `json:"admin"`
-		AccessToken string `json:"access_token"`
+		Admin       models.Admin `json:"admin"`
+		AccessToken string       `json:"access_token"`
 	}{
-		Admin: admin,
+		Admin:       admin,
 		AccessToken: token,
 	}
 
