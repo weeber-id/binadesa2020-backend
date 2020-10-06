@@ -61,13 +61,17 @@ func main() {
 			adminGroup.GET("/accounts", administrator.GetAll)
 			adminGroup.POST("/account", administrator.Create)
 			adminGroup.PATCH("/account/password", administrator.ChangePassword)
+			adminGroup.POST("/account/change-password", administrator.ChangePassword)
 			adminGroup.DELETE("/account", administrator.Delete)
+			adminGroup.POST("/account/delete", administrator.Delete)
 
 			adminGroup.GET("/complaints", complaint.Get)
 
 			adminGroup.POST("/news", news.Create)
 			adminGroup.PUT("/news", news.Update)
+			adminGroup.POST("/news/update", news.Update)
 			adminGroup.DELETE("/news", news.Delete)
+			adminGroup.POST("/news/delete", news.Delete)
 
 			adminGroup.POST("/media/private/download", media.DownloadPrivateFile)
 			adminGroup.POST("/media/public/upload", media.UploadPublicFile)
@@ -77,12 +81,15 @@ func main() {
 				// TODO send email when change status by admin
 				adminSubmissionGroup.GET("/kartu-keluarga", kartukeluarga.Get)
 				adminSubmissionGroup.PATCH("/kartu-keluarga", kartukeluarga.Update)
+				adminSubmissionGroup.POST("/kartu-keluarga/update", kartukeluarga.Update)
 
 				adminSubmissionGroup.GET("/akta-kelahiran", aktakelahiran.Get)
 				adminSubmissionGroup.PATCH("/akta-kelahiran", aktakelahiran.Update)
+				adminSubmissionGroup.POST("/akta-kelahiran/update", aktakelahiran.Update)
 
 				adminSubmissionGroup.GET("/surat-keterangan", suratketerangan.Get)
 				adminSubmissionGroup.PATCH("/surat-keterangan", suratketerangan.Update)
+				adminSubmissionGroup.POST("/surat-keterangan/update", suratketerangan.Update)
 			}
 		}
 	}
