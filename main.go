@@ -74,6 +74,7 @@ func main() {
 			adminGroup.DELETE("/news", news.Delete)
 			adminGroup.POST("/news/delete", news.Delete)
 
+			adminGroup.POST("/media/private/download-submission", media.DownloadMultiplePrivateFile)
 			adminGroup.POST("/media/private/download", media.DownloadPrivateFile)
 			adminGroup.POST("/media/public/upload", media.UploadPublicFile)
 
