@@ -2,6 +2,7 @@ package administrator
 
 import (
 	"binadesa2020-backend/lib/clog"
+	"binadesa2020-backend/lib/middleware"
 	"binadesa2020-backend/lib/models"
 	"context"
 	"net/http"
@@ -31,4 +32,17 @@ func GetAll(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "OK", "data": data})
+}
+
+// GetMe account information
+func GetMe(c *gin.Context) {
+	var admin models.Admin
+	claims := middleware.GetClaims(c)
+
+	if found := admin.FindByUsername(claims.Username); found != true {
+		c.JSON(http.StatusNotFound, gin.H{"message": "admin not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "OK", "data": admin})
 }

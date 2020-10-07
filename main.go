@@ -59,6 +59,7 @@ func main() {
 		adminGroup.Use(middleware.AdminAuthorization())
 		{
 			adminGroup.GET("/accounts", administrator.GetAll)
+			adminGroup.GET("/account", administrator.GetMe)
 			adminGroup.POST("/account", administrator.Create)
 			adminGroup.PATCH("/account/password", administrator.ChangePassword)
 			adminGroup.POST("/account/change-password", administrator.ChangePassword)
