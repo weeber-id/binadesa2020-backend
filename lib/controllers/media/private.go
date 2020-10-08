@@ -53,6 +53,7 @@ func DownloadPrivateFile(c *gin.Context) {
 	contentType := http.DetectContentType(buf.Bytes())
 
 	// write to response
+	c.Header("Content-Length", string(len(buf.Bytes())))
 	c.Header("Content-Disposition", "attachment; filename="+filename)
 	c.Header("Content-Type", contentType)
 	c.Data(http.StatusOK, contentType, buf.Bytes())
@@ -161,6 +162,7 @@ func DownloadMultiplePrivateFile(c *gin.Context) {
 	zipWriter.Close()
 
 	contentType := http.DetectContentType(buf.Bytes())
+	c.Header("Content-Length", string(len(buf.Bytes())))
 	c.Header("Content-Disposition", "attachment; filename="+req.UniqueCode+".zip")
 	c.Header("Content-Type", contentType)
 	c.Data(http.StatusOK, contentType, buf.Bytes())
