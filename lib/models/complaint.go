@@ -20,6 +20,7 @@ type Complaint struct {
 	RW        string `bson:"RW" json:"rw"`
 	Address   string `bson:"address" json:"address"`
 	Complaint string `bson:"complaint" json:"complaint"`
+	IsRead    bool   `bson:"is_read" json:"is_read"`
 }
 
 // Collection for complaint data
@@ -47,5 +48,18 @@ func (c *Complaint) GetByID(ID string) (bool, error) {
 	if *c == empty {
 		return false, nil
 	}
+
+	if c.IsRead == false {
+		c.IsRead = true
+		c.Update()
+	}
 	return true, nil
+}
+
+// Update this struct to database
+func (c *Complaint) Update() (*mongo.UpdateResult, error) {
+	c.ModifiedAt = variable.DateTimeNowPtr()
+
+	update := bson.M{"$set": *c}
+	return c.Collection().UpdateOne(context.Background(), bson.M{"_id": c.ID}, update)
 }

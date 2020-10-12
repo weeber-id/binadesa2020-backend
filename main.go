@@ -67,6 +67,7 @@ func main() {
 			adminGroup.POST("/account/delete", administrator.Delete)
 
 			adminGroup.GET("/complaints", complaint.Get)
+			adminGroup.POST("/complaints/read_status", complaint.ReadStatus)
 
 			adminGroup.POST("/news", news.Create)
 			adminGroup.PUT("/news", news.Update)
