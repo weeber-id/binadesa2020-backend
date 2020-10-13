@@ -5,8 +5,10 @@ import (
 	"math"
 	"net/http"
 
+	"go.mongodb.org/mongo-driver/bson/primitive"
+
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"gopkg.in/mgo.v2/bson"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,8 +22,9 @@ func Get(c *gin.Context) {
 			Slug *string `form:"slug"`
 
 			// pagination parameter
-			Page           *int `form:"page"` // start from 1
-			ContentPerPage *int `form:"content_per_page"`
+			Page           *int    `form:"page"` // start from 1
+			ContentPerPage *int    `form:"content_per_page"`
+			ExcludeID      *string `form:"exclude_id"`
 		}
 	)
 
@@ -67,7 +70,14 @@ func Get(c *gin.Context) {
 	)
 
 	numSkip := (*req.Page - 1) * (*req.ContentPerPage)
-	numLimit := (*req.Page) * (*req.ContentPerPage)
+	numLimit := *req.ContentPerPage
+
+	// filtering
+	filter := bson.D{}
+	if req.ExcludeID != nil {
+		id, _ := primitive.ObjectIDFromHex(*req.ExcludeID)
+		filter = append(filter, bson.E{"_id", bson.M{"$ne": id}})
+	}
 
 	// sort by latest and pagination
 	opt := options.Find()
@@ -75,7 +85,7 @@ func Get(c *gin.Context) {
 	opt.SetSkip(int64(numSkip))
 	opt.SetLimit(int64(numLimit))
 
-	cur, _ := newsMdl.Collection().Find(c, bson.M{}, opt)
+	cur, _ := newsMdl.Collection().Find(c, filter, opt)
 	for cur.Next(c) {
 		var news models.News
 

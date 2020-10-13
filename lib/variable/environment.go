@@ -56,7 +56,7 @@ var GmailConfig struct {
 func Initialization() {
 	godotenv.Load("devel.env")
 
-	GmailConfig.Email = "weeber.id@gmail.com"
+	GmailConfig.Email = os.Getenv("GMAIL_MAIL")
 	GmailConfig.Password = os.Getenv("GMAIL_PASS")
 
 	// Reading Mode and set service configuration

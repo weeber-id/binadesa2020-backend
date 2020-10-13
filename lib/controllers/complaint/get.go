@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"time"
 
+	"go.mongodb.org/mongo-driver/mongo/options"
+
 	"github.com/gin-gonic/gin"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -42,14 +44,17 @@ func Get(c *gin.Context) {
 
 	// --------------------- Get all by ID ---------------------
 	var (
+		findOpt options.FindOptions
 		compMdl models.Complaint
 		data    []*models.Complaint
 	)
 
+	findOpt.SetSort(bson.M{"_id": -1})
+
 	ctx, cancel := context.WithTimeout(c, 5*time.Second)
 	defer cancel()
 
-	cur, err := compMdl.Collection().Find(ctx, bson.M{})
+	cur, err := compMdl.Collection().Find(ctx, bson.M{}, &findOpt)
 	clog.Panic(err, "Find all complaint")
 
 	for cur.Next(ctx) {

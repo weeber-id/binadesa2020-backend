@@ -13,6 +13,7 @@ import (
 // AktaKelahiran submission structur
 type AktaKelahiran struct {
 	BaseSubmission     `bson:",inline"`
+	Nama               string             `bson:"nama" json:"nama"`
 	NamaKepalaKeluarga string             `bson:"nama_kepala_keluarga" json:"nama_kepala_keluarga"`
 	Email              string             `bson:"email" json:"email"`
 	File               AktaKelahiranFiles `bson:"file" json:"file"`

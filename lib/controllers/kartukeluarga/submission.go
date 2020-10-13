@@ -20,6 +20,7 @@ func Submission(c *gin.Context) {
 	var (
 		wg  sync.WaitGroup
 		req struct {
+			Nama               string `form:"nama" binding:"required"`
 			NamaKepalaKeluarga string `form:"nama_kepala_keluarga" binding:"required"`
 			Email              string `form:"email" binding:"required"`
 		}
@@ -54,6 +55,7 @@ func Submission(c *gin.Context) {
 
 	// create new submission
 	newSubmission := &models.KartuKeluarga{
+		Nama:               req.Nama,
 		NamaKepalaKeluarga: req.NamaKepalaKeluarga,
 		Email:              req.Email,
 	}
