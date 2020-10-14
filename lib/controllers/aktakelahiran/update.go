@@ -2,6 +2,7 @@ package aktakelahiran
 
 import (
 	"binadesa2020-backend/lib/models"
+	"binadesa2020-backend/lib/services/gmail"
 	"net/http"
 	"strconv"
 
@@ -41,5 +42,19 @@ func Update(c *gin.Context) {
 
 	akta.StatusCode = statusInt
 	akta.Update()
+
+	// Send Email Status
+	if statusInt == models.StatusCode.Accepted {
+		go func() {
+			email := gmail.Email{To: akta.Email}
+			email.SendCompleteSubmission(&akta)
+		}()
+	} else if statusInt == models.StatusCode.Rejected {
+		go func() {
+			email := gmail.Email{To: akta.Email}
+			email.SendRejectSubmission(&akta)
+		}()
+	}
+
 	c.JSON(http.StatusOK, gin.H{"message": "data has been update"})
 }

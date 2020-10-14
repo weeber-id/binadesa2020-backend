@@ -2,6 +2,7 @@ package suratketerangan
 
 import (
 	"binadesa2020-backend/lib/models"
+	"binadesa2020-backend/lib/services/gmail"
 	"net/http"
 	"strconv"
 
@@ -41,5 +42,19 @@ func Update(c *gin.Context) {
 
 	suratket.StatusCode = statusInt
 	suratket.Update()
+
+	// Send Email Status
+	if statusInt == models.StatusCode.Accepted {
+		go func() {
+			email := gmail.Email{To: suratket.Email}
+			email.SendCompleteSubmission(&suratket)
+		}()
+	} else if statusInt == models.StatusCode.Rejected {
+		go func() {
+			email := gmail.Email{To: suratket.Email}
+			email.SendRejectSubmission(&suratket)
+		}()
+	}
+
 	c.JSON(http.StatusOK, gin.H{"message": "data has been update"})
 }

@@ -118,7 +118,7 @@ func Submission(c *gin.Context) {
 	// Sending receive email
 	go func() {
 		email := &gmail.Email{To: req.Email}
-		email.SendReceiveSubmission("Kartu Keluarga")
+		email.SendReceiveSubmission(newSubmission)
 	}()
 
 	c.JSON(http.StatusOK, gin.H{

@@ -2,6 +2,7 @@ package kartukeluarga
 
 import (
 	"binadesa2020-backend/lib/models"
+	"binadesa2020-backend/lib/services/gmail"
 	"net/http"
 	"strconv"
 
@@ -41,5 +42,19 @@ func Update(c *gin.Context) {
 
 	karkel.StatusCode = statusInt
 	karkel.Update()
+
+	// Send Email Status
+	if statusInt == models.StatusCode.Accepted {
+		go func() {
+			email := gmail.Email{To: karkel.Email}
+			email.SendCompleteSubmission(&karkel)
+		}()
+	} else if statusInt == models.StatusCode.Rejected {
+		go func() {
+			email := gmail.Email{To: karkel.Email}
+			email.SendRejectSubmission(&karkel)
+		}()
+	}
+
 	c.JSON(http.StatusOK, gin.H{"message": "data has been update"})
 }

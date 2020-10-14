@@ -8,6 +8,21 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+type statusCode struct {
+	Waiting  int
+	Process  int
+	Rejected int
+	Accepted int
+}
+
+// StatusCode for submission
+var StatusCode statusCode = statusCode{
+	Waiting:  0,
+	Process:  1,
+	Rejected: 2,
+	Accepted: 3,
+}
+
 // Base struct for data in MongoDB
 type Base struct {
 	ID         primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
@@ -43,6 +58,6 @@ func (b *BaseSubmission) InitCreate() error {
 	b.InitDate()
 
 	b.UniqueCode = tools.RandomString(6)
-	b.StatusCode = 0
+	b.StatusCode = StatusCode.Waiting
 	return nil
 }
