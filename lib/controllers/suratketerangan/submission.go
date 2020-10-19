@@ -19,9 +19,10 @@ func Submission(c *gin.Context) {
 	var (
 		wg  sync.WaitGroup
 		req struct {
-			Nama  string `form:"nama" binding:"required"`
-			Email string `form:"email" binding:"required"`
-			Tipe  string `form:"tipe" binding:"required"`
+			Nama               string `form:"nama" binding:"required"`
+			NamaKepalaKeluarga string `form:"nama_kepala_keluarga" binding:"nama_kepala_keluarga"`
+			Email              string `form:"email" binding:"required"`
+			Tipe               string `form:"tipe" binding:"required"`
 		}
 	)
 
@@ -50,9 +51,10 @@ func Submission(c *gin.Context) {
 
 	// create new submission
 	newSubmission := &models.SuratKeterangan{
-		Nama:  req.Nama,
-		Email: req.Email,
-		Tipe:  req.Tipe,
+		Nama:               req.Nama,
+		NamaKepalaKeluarga: req.NamaKepalaKeluarga,
+		Email:              req.Email,
+		Tipe:               req.Tipe,
 	}
 	result, err := newSubmission.Create()
 	if err != nil {

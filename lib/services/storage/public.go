@@ -4,6 +4,7 @@ import (
 	"binadesa2020-backend/lib/variable"
 	"bytes"
 	"context"
+	"net/http"
 	"path"
 
 	"github.com/minio/minio-go/v7"
@@ -28,7 +29,7 @@ func (p *PublicObject) Upload(ctx context.Context) (*minio.UploadInfo, error) {
 		p.ObjectName,
 		bytes.NewReader(p.File),
 		p.Size,
-		minio.PutObjectOptions{},
+		minio.PutObjectOptions{ContentType: http.DetectContentType(p.File)},
 	)
 	if err != nil {
 		return nil, err
