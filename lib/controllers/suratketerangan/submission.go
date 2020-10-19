@@ -20,7 +20,7 @@ func Submission(c *gin.Context) {
 		wg  sync.WaitGroup
 		req struct {
 			Nama               string `form:"nama" binding:"required"`
-			NamaKepalaKeluarga string `form:"nama_kepala_keluarga" binding:"nama_kepala_keluarga"`
+			NamaKepalaKeluarga string `form:"nama_kepala_keluarga" binding:"required"`
 			Email              string `form:"email" binding:"required"`
 			Tipe               string `form:"tipe" binding:"required"`
 		}
