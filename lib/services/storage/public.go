@@ -35,8 +35,7 @@ func (p *PublicObject) Upload(ctx context.Context) (*minio.UploadInfo, error) {
 		return nil, err
 	}
 
-	p.URL = path.Join(
-		variable.MinioConfig.URIEndpoint,
+	p.URL = variable.MinioConfig.URIEndpoint + "/" + path.Join(
 		bucket,
 		p.ObjectName,
 	)
