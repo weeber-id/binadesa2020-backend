@@ -9,7 +9,7 @@ func CORS() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		origin := c.Request.Header.Get("origin")
 		switch origin {
-		case "http://localhost:3000", "https://staging-binadesa.weeber.id", "https://telukjambe.id":
+		case "http://localhost:3000", "https://staging-binadesa.weeber.id", "https://telukjambe.id", "https://admin.telukjambe.id":
 			c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
 		}
 
