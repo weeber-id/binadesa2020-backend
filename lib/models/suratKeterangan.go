@@ -14,12 +14,13 @@ import (
 
 // SuratKeterangan submission structur
 type SuratKeterangan struct {
-	BaseSubmission `bson:",inline"`
-	Tipe           string               `bson:"tipe" json:"tipe"`
-	Nama           string               `bson:"nama" json:"nama"`
-	Email          string               `bson:"email" json:"email"`
-	IsPaid         bool                 `bson:"is_paid" json:"is_paid"`
-	File           SuratKeteranganFiles `bson:"file" json:"file"`
+	BaseSubmission     `bson:",inline"`
+	Tipe               string               `bson:"tipe" json:"tipe"`
+	Nama               string               `bson:"nama" json:"nama"`
+	NamaKepalaKeluarga string               `bson:"nama_kepala_keluarga" json:"nama_kepala_keluarga"`
+	Email              string               `bson:"email" json:"email"`
+	IsPaid             bool                 `bson:"is_paid" json:"is_paid"`
+	File               SuratKeteranganFiles `bson:"file" json:"file"`
 }
 
 // SuratKeteranganFiles for file submission
