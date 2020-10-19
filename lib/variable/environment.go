@@ -75,7 +75,7 @@ func Initialization() {
 		ServiceConfig.Path = "/api"
 		ServiceConfig.HTTPS = true
 	case "production":
-		ServiceConfig.Domain = "telukjambe.id"
+		ServiceConfig.Domain = "admin.telukjambe.id"
 		ServiceConfig.Path = "/api"
 		ServiceConfig.HTTPS = true
 	default:
