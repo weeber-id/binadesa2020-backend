@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"context"
 	"net/http"
+	"net/url"
 	"path"
 
 	"github.com/minio/minio-go/v7"
@@ -37,7 +38,7 @@ func (p *PublicObject) Upload(ctx context.Context) (*minio.UploadInfo, error) {
 
 	p.URL = variable.MinioConfig.URIEndpoint + "/" + path.Join(
 		bucket,
-		p.ObjectName,
+		url.QueryEscape(p.ObjectName),
 	)
 	return &info, nil
 }

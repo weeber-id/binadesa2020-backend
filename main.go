@@ -44,7 +44,6 @@ func main() {
 		{
 			submissionGroup.GET("/find", controllers.GetSubmissionByCode)
 
-			// TODO send email when create a submission
 			submissionGroup.GET("/kartu-keluarga", kartukeluarga.GetOne)
 			submissionGroup.POST("/kartu-keluarga", kartukeluarga.Submission)
 
@@ -81,7 +80,6 @@ func main() {
 
 			adminSubmissionGroup := adminGroup.Group("/submission")
 			{
-				// TODO send email when change status by admin
 				adminSubmissionGroup.GET("/kartu-keluarga", kartukeluarga.Get)
 				adminSubmissionGroup.PATCH("/kartu-keluarga", kartukeluarga.Update)
 				adminSubmissionGroup.POST("/kartu-keluarga/update", kartukeluarga.Update)
