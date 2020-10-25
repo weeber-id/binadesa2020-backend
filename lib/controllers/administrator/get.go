@@ -16,7 +16,7 @@ import (
 func GetAll(c *gin.Context) {
 	var (
 		adminMdl models.Admin
-		data     []*models.Admin
+		data     []*models.Admin = make([]*models.Admin, 0)
 	)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)

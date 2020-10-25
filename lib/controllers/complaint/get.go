@@ -46,7 +46,7 @@ func Get(c *gin.Context) {
 	var (
 		findOpt options.FindOptions
 		compMdl models.Complaint
-		data    []*models.Complaint
+		data    []*models.Complaint = make([]*models.Complaint, 0)
 	)
 
 	findOpt.SetSort(bson.M{"_id": -1})

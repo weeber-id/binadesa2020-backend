@@ -66,7 +66,7 @@ func Get(c *gin.Context) {
 
 	var (
 		newsMdl   models.News
-		multiNews []*models.News
+		multiNews []*models.News = make([]*models.News, 0)
 	)
 
 	numSkip := (*req.Page - 1) * (*req.ContentPerPage)

@@ -39,7 +39,7 @@ func Get(c *gin.Context) {
 	var (
 		findOpt       options.FindOptions
 		skmdl         models.SuratKeterangan
-		multisuratket []*models.SuratKeterangan
+		multisuratket []*models.SuratKeterangan = make([]*models.SuratKeterangan, 0)
 	)
 
 	findOpt.SetSort(bson.M{"_id": -1}) // sort by latest

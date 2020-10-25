@@ -41,7 +41,7 @@ func Get(c *gin.Context) {
 	var (
 		findOpt     options.FindOptions
 		karkelMdl   models.KartuKeluarga
-		multikarkel []*models.KartuKeluarga
+		multikarkel []*models.KartuKeluarga = make([]*models.KartuKeluarga, 0)
 	)
 
 	findOpt.SetSort(bson.M{"_id": -1}) // sort by latest ID

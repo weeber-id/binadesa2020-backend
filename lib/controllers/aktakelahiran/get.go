@@ -40,7 +40,7 @@ func Get(c *gin.Context) {
 	var (
 		findOpt   options.FindOptions
 		aktaMdl   models.AktaKelahiran
-		multiakta []*models.AktaKelahiran
+		multiakta []*models.AktaKelahiran = make([]*models.AktaKelahiran, 0)
 	)
 
 	findOpt.SetSort(bson.M{"_id": -1}) // sort by latest ID
